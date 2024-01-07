@@ -62,10 +62,11 @@ public class StudentController {
 		}
 	}
 
-	@PostMapping("/address")
-	public ResponseEntity<Address> addAdress(@RequestBody Address address) {
-		Address add = studentService.addAddress(address);
-		return new ResponseEntity<Address>(add, HttpStatus.CREATED);
+	@PostMapping("/address/{studentId}")
+	public ResponseEntity<Address> addAdress(@RequestBody Address address, @PathVariable Long studentId) {
+		Address addedAddress = studentService.addAddress(address, studentId);
+		return new ResponseEntity<>(addedAddress, HttpStatus.CREATED);
+
 	}
 
 //	pubilc ResponseEntity<>

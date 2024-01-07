@@ -102,8 +102,18 @@ public class StudentService {
 		}
 	}
 
-	public Address addAddress(Address address) throws StudentException {
-		return addressRepo.save(address);
+	public Address addAddress(Address address, Long studentId) throws StudentException {
+		try {
+			Student student = studentRepo.findById(studentId)
+					.orElseThrow(() -> new StudentException("Student not found"));
+			address.setStudent(student);
+			Address addedAddress = addressRepo.save(address);
+			student.getAddress().add(addedAddress);
+			studentRepo.save(student);
+			return addedAddress;
+		} catch (Exception ex) {
+			throw new StudentException("Not added address with student", ex);
+		}
 	}
 
 }
