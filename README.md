@@ -10,10 +10,6 @@ The Student Management System is a comprehensive solution designed to empower ed
 - Hibernate
 - MySQL
 
-## Deployed
-**Back-End:**
-https://github.com/rahulmk19/Student_Management_Project
-
 ## API Endpoints
 ### Swagger 
 - ** http://localhost:8080/swagger-ui.html
