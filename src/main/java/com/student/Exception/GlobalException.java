@@ -16,8 +16,8 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 @ControllerAdvice
 public class GlobalException {
 
-	@ExceptionHandler(StudentException.class)
-	public ResponseEntity<MyErrorDetails> StudentExceptionHandler(StudentException stu, WebRequest req) {
+	@ExceptionHandler(StudentManagementException.class)
+	public ResponseEntity<MyErrorDetails> StudentExceptionHandler(StudentManagementException stu, WebRequest req) {
 
 		MyErrorDetails err = new MyErrorDetails(stu.getMessage(), req.getDescription(false), LocalDateTime.now());
 

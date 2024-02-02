@@ -1,7 +1,5 @@
 package com.student.Model;
 
-import java.util.Objects;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,7 +19,7 @@ import lombok.NoArgsConstructor;
 public class Address {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long address_id;
+	private Long addressId;
 
 	@NotEmpty
 	private String area;
@@ -42,25 +40,5 @@ public class Address {
 	@ManyToOne
 	@JoinColumn(name = "student_id")
 	private Student student;
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Address other = (Address) obj;
-		return Objects.equals(addressType, other.addressType) && Objects.equals(address_id, other.address_id)
-				&& Objects.equals(area, other.area) && Objects.equals(district, other.district)
-				&& Objects.equals(pincode, other.pincode) && Objects.equals(state, other.state)
-				&& Objects.equals(student, other.student);
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(addressType, address_id, area, district, pincode, state, student);
-	}
 
 }

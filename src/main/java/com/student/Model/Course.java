@@ -22,7 +22,7 @@ public class Course {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long course_id;
+	private Long courseId;
 
 	@NotEmpty
 	private String courseName;
@@ -31,7 +31,7 @@ public class Course {
 	private String description;
 
 	@NotEmpty
-	private String course_type;
+	private String courseType;
 
 	@NotNull
 	private double duration;
@@ -41,4 +41,5 @@ public class Course {
 
 	@ManyToMany(mappedBy = "courses")
 	private Set<Student> students = new HashSet<>();
+
 }

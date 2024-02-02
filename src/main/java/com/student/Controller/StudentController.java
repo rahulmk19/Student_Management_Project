@@ -1,6 +1,6 @@
 package com.student.Controller;
 
-import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,19 +16,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.student.Model.Address;
 import com.student.Model.Course;
 import com.student.Model.Student;
-import com.student.Service.StudentService;
+import com.student.Service.StudentServiceImpl;
+
+import jakarta.validation.Valid;
 
 @RestController
 public class StudentController {
 
 	@Autowired
-	private StudentService studentService;
-
-	@PostMapping("/students")
-	public ResponseEntity<Student> addUser(@RequestBody Student stu) {
-		Student student = studentService.addStudent(stu);
-		return new ResponseEntity<>(student, HttpStatus.CREATED);
-	}
+	private StudentServiceImpl studentService;
 
 	@PutMapping("/students/{studentId}")
 	public ResponseEntity<Student> updateStudentDetails(@RequestBody Student student, @PathVariable Long studentId) {
@@ -37,19 +33,9 @@ public class StudentController {
 	}
 
 	@GetMapping("/course")
-	public ResponseEntity<List<Course>> getAllCourse() {
-		List<Course> allCourse = studentService.getAllCourse();
-		return new ResponseEntity<List<Course>>(allCourse, HttpStatus.ACCEPTED);
-	}
-
-	@PostMapping("students/{studentId}/course/{courseId}")
-	public ResponseEntity<String> assignCourseStudent(@PathVariable Long studentId, @PathVariable Long courseId) {
-		try {
-			String msg = studentService.assignCourseStudent(studentId, courseId);
-			return new ResponseEntity<String>(msg, HttpStatus.ACCEPTED);
-		} catch (Exception ex) {
-			return new ResponseEntity<String>("Error :" + ex.getMessage(), HttpStatus.BAD_REQUEST);
-		}
+	public ResponseEntity<Set<Course>> getAllCourse(@Valid @PathVariable Long studentCode) {
+		Set<Course> allCourse = studentService.getAllCourse(studentCode);
+		return new ResponseEntity<Set<Course>>(allCourse, HttpStatus.ACCEPTED);
 	}
 
 	@DeleteMapping("students/{studentId}/course/{courseId}")
@@ -61,14 +47,5 @@ public class StudentController {
 			return new ResponseEntity<String>("Error :" + ex.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
-
-	@PostMapping("/address/{studentId}")
-	public ResponseEntity<Address> addAdress(@RequestBody Address address, @PathVariable Long studentId) {
-		Address addedAddress = studentService.addAddress(address, studentId);
-		return new ResponseEntity<>(addedAddress, HttpStatus.CREATED);
-
-	}
-
-//	pubilc ResponseEntity<>
 
 }

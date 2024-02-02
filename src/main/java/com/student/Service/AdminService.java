@@ -1,71 +1,31 @@
 package com.student.Service;
 
 import java.util.List;
-import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.student.Exception.StudentException;
+import com.student.DTO.AddressDTO;
+import com.student.DTO.CourseDTO;
+import com.student.DTO.StudentDTO;
+import com.student.Exception.StudentManagementException;
+import com.student.Model.Address;
 import com.student.Model.Admin;
 import com.student.Model.Course;
 import com.student.Model.Student;
-import com.student.Repository.AdminRepo;
-import com.student.Repository.CourseRepo;
-import com.student.Repository.StudentRepo;
 
-@Service
-public class AdminService {
+public interface AdminService {
 
-	@Autowired
-	private AdminRepo adminRepo;
+	public Admin registerAdmin(Admin admin) throws StudentManagementException;
 
-	@Autowired
-	private StudentRepo studentRepo;
+	public Student addStudent(StudentDTO studentDTO) throws StudentManagementException;
 
-	@Autowired
-	private CourseRepo courseRepo;
+	public Address addAddressToStudent(AddressDTO addressDTO, String studentCode) throws StudentManagementException;
 
-	public Admin addAdmin(Admin admin) throws StudentException {
-		Optional<Admin> admins = adminRepo.findByEmail(admin.getEmail());
-		if (!admins.isPresent()) {
-			throw new StudentException("Duplicate Admin find with this email: " + admin.getEmail());
-		}
-		return adminRepo.save(admins.get());
-	}
+	public Course addCourse(CourseDTO courseDTO) throws StudentManagementException;
 
-	public List<Student> getAllStudent() throws StudentException {
-		List<Student> student = studentRepo.findAll();
-		if (student.isEmpty()) {
-			throw new StudentException("Student is not added yet");
-		}
-		return student;
-	}
+	public void assignCourseToStudent(Long courseId, String studentCode) throws StudentManagementException;
 
-	public Student getStudentById(Long studentId) {
-		Optional<Student> st = studentRepo.findById(studentId);
-		if (st.isPresent()) {
-			return st.get();
-		} else {
-			throw new StudentException("Student not found with ID:" + studentId);
-		}
-	}
+	public List<Student> getAllStudent() throws StudentManagementException;
 
-	public Course addCourse(Course course) {
-		Optional<Course> courses = courseRepo.findByCourseName(course.getCourseName());
-		if (courses.isPresent()) {
-			throw new StudentException("Courses is already available");
-		}
-		return courseRepo.save(courses.get());
-	}
+	public Student getStudentById(String email) throws StudentManagementException;
 
-	public String deleteCourse(String studentCode) {
-		Optional<Student> stu = studentRepo.findByStudentCode(studentCode);
-		if (stu.isPresent()) {
-			studentRepo.deleteById(stu.get().getStudent_id());
-			return "Student Deleted Succesfully";
-		} else {
-			throw new StudentException("Student not found with this Student ID: " + studentCode);
-		}
-	}
+	public String deleteCourse(Long courseId) throws StudentManagementException;
 }
